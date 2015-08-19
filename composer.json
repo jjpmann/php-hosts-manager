@@ -2,7 +2,7 @@
     "name": "jjpmann/php-hosts-manager",
     "type": "library",
     "description": "PHP CLI for managing local hosts file",
-    "keywords": ["/etc/hosts", "hosts", "host file", "php"],
+    "keywords": ["hosts", "host file", "php"],
     "homepage": "http://github.com/jjpmann/php-hosts-manager",
     "license": "MIT",
     "authors" : [
