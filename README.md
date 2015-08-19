@@ -39,5 +39,5 @@ __or global__
 
 ## ToDo
 
-0. Stop when Adding something thats already there (the bash script isn't doing this for some reason)
+0. Stop 'Add' when host exists (the bash script isn't doing this for some reason)
 0. Add Tests
