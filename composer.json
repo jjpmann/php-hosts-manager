@@ -1,0 +1,26 @@
+{
+    "name": "jjpmann/php-hosts-manager",
+    "type": "library",
+    "description": "PHP CLI for managing local hosts file",
+    "keywords": ["/etc/hosts", "hosts", "host file", "php"],
+    "homepage": "http://github.com/jjpmann/php-hosts-manager",
+    "license": "MIT",
+    "authors" : [
+        {
+            "name": "Jerry Price",
+            "email": "jjpmann@gmail.com",
+            "homepage": "http://github.com/jjpmann"
+        }
+    ],
+    "bin": ["hosts"],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/console": "^2.7",
+        "symfony/process": "^2.7"
+    },
+    "autoload": {
+        "psr-4": {
+            "HostsManager\\": "src/"
+        }
+    }
+}
