@@ -21,7 +21,7 @@ class BaseCommand extends Command
 
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $this->hostProcess->callback(function($data) use ($output) {
+        $this->hostProcess->callback(function ($data) use ($output) {
             $output->write($data);
         });
 

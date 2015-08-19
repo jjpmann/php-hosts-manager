@@ -38,6 +38,4 @@ class CheckCommand extends BaseCommand
         $status = $this->hostProcess->check($host, false);
 
     }
-
-
 }
