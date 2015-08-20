@@ -1,4 +1,7 @@
 # php-hosts-manager
+
+__v0.0.1__
+
 PHP CLI for managing local hosts file
 
 using https://gist.github.com/mikeflynn/4278796
