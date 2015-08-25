@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class HostsProcess
 {
  
-    const SCRIPT        = __DIR__ . '/update-hosts.sh';
+    protected $script = __DIR__ . '/update-hosts.sh';
 
     protected $cmd;
     protected $sudo   = true;
@@ -142,7 +142,7 @@ class HostsProcess
     protected function runScript($cmd, $sudo = true)
     {
 
-        $script = self::SCRIPT;
+        $script = $this->script;
 
         if ($sudo) {
             $script = "sudo $script";
