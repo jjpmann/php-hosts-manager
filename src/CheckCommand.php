@@ -35,7 +35,7 @@ class CheckCommand extends BaseCommand
 
         $host = $input->getArgument('host');
 
-        $status = $this->hostProcess->check($host, false);
+        $this->hostProcess->check($host)->run();
 
     }
 }

@@ -32,6 +32,6 @@ class RollbackCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-
+        $this->hostProcess->rollback()->run();
     }
 }

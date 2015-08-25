@@ -8,33 +8,44 @@ use Symfony\Component\Console\Output\OutputInterface;
 class HostsProcess
 {
  
-    const DOMAINREGEX   = '/^[a-zA-Z0-9][a-zA-Z0-9\-\_]+[a-zA-Z0-9]$/';
     const SCRIPT        = __DIR__ . '/update-hosts.sh';
 
-    private static $output;
+    protected $cmd;
+    protected $sudo   = true;
+    protected $host   = null;
+    protected $ip     = null;
+    protected $message;
+    
+    protected $output;
+    protected $callback;
+    protected $previousCallback;
+    protected $passthru = false;
 
-    private $cmd;
-    private $sudo   = true;
-    private $host   = null;
-    private $ip     = null;
-    private $callback;
-
-    public function __construct($cmd, $host = null, $ip = null, $sudo = true, $callback = null)
+    public function __construct($callback = null)
     {
+        // $this->cmd  = $cmd;
+        // $this->host = $host;
+        // $this->ip   = $ip;
+        // $this->sudo = $sudo;
+        $this->callback = $callback;
+    }
+
+    private function create($cmd, $host = null, $ip = null, $sudo = true, $callback = null)
+    {
+        $this->validIp($ip);
+        $this->validHost($host);
+        $this->validCallback($callback);
+
         $this->cmd  = $cmd;
         $this->host = $host;
         $this->ip   = $ip;
         $this->sudo = $sudo;
-        $this->callback = $callback;
-    }
 
-    private static function create($cmd, $host = null, $ip = null, $sudo = true, $callback = null)
-    {
-        self::validIp($ip);
-        self::validHost($host);
-        self::validCallback($callback);
-        return new static($cmd, $host, $ip, $sudo, $callback);
-        //return $class->process();
+        if ($callback) {
+            $this->callback = $callback;
+        }
+
+        return $this;
     }
 
     public function __get($name)
@@ -45,71 +56,58 @@ class HostsProcess
         return false;
     }
 
-    public static function add($host, $ip, $callback = null)
-    {
-        return self::create("add $host $ip", $host, $ip, true, $callback);
+    public function add($host, $ip, $callback = null)
+    {   
+        $this->create("check $host", $host, $ip, true, $callback);
+        
+        $this->previousCallback = $this->callback;
+        $this->callback = [$this, 'checkCallback'];
+
+        return $this;
     }
 
-    public static function remove($host, $callback = null)
+    public function remove($host, $callback = null)
     {
-        return self::create("remove $host", $host, null, true, $callback);
+        $this->create("remove $host", $host, null, true, $callback);
+        
+        $this->message = "You have removed {$host} from your Hosts file.\n";
+        return $this;
     }
 
-    public static function update($host, $ip, $callback = null)
+    public function update($host, $ip, $callback = null)
     {
-        return self::create("update $host $ip", $host, $ip, true, $callback);
+        $this->create("check $host", $host, $ip, true, $callback);
+    
+        $this->previousCallback = $this->callback;
+        $this->callback = [$this, 'checkCallback'];
+
+        return $this;
     }
 
-    public static function check($host, $callback = null)
+    public function check($host, $callback = null)
     {
-        return self::create("check $host", $host, null, false, $callback);
+        $this->create("check $host", $host, null, false, $callback);
+        return $this;
     }
 
-    public static function rollback($callback = null)
+    public function rollback($callback = null)
     {
-        return self::create('rollback', null, null, true, $callback);
+        $this->create('rollback', null, null, true, $callback);
+        
+        $this->message = "You have rolled back your Hosts file.\n";
+        return $this;
     }
 
-    protected static function validHost($host)
+    public function output(OutputInterface $output)
     {
-        if ($host === null) {
-            return;
-        }
-        if (false === self::isValidDomainName($host)) {
-            throw new \RuntimeException('Domain invalid');
-        }
+        $this->output = $output;
+        return $this;
     }
 
-    protected static function validIp($ip)
+    public function callback($callback)
     {
-        if ($ip === null) {
-            return;
-        }
-        if (false === filter_var($ip, FILTER_VALIDATE_IP)) {
-            throw new \RuntimeException('IP invalid');
-        }
-    }
-
-    protected static function validCallback($callback)
-    {
-        if ($callback == null) {
-            return;
-        }
-        if (!is_callable($callback)) {
-            throw new \RuntimeException('IP invalid');
-        }
-    }
-
-
-    public static function output(OutputInterface $output)
-    {
-        self::$output =& $output;
-
-    }
-
-    public static function callback($callback)
-    {
-        self::$callback = $callback;
+        $this->callback = $callback;
+        return $this;
     }
     
     public function run()
@@ -118,18 +116,44 @@ class HostsProcess
         return $this;
     }
 
-    private function runScript($cmd, $sudo = true)
+    private function runCheck()
+    {
+        $this->previousCallback = $this->callback;
+        $this->callback = [$this, 'checkCallback'];
+
+        $this->runScript("check {$this->host}", false);
+
+    }
+
+    protected function checkCallback($obj, $output)
+    {
+        $this->callback = $this->previousCallback;
+
+        if ($output === "The host {$this->host} was not found in the host file.") {
+            $this->message = "Adding {$this->host} {$this->ip}\n";
+            $this->runScript("add {$this->host} {$this->ip}");
+        } else {
+            $this->message = "Updating  {$this->host} to {$this->ip}\n";
+            $this->runScript("update {$this->host} {$this->ip}");    
+        }
+        
+    }
+
+    protected function runScript($cmd, $sudo = true)
     {
 
         $script = self::SCRIPT;
 
         if ($sudo) {
             $script = "sudo $script";
+            $this->passthru = true;
         }
 
         $process = new Process("$script $cmd");
         $process->start();
 
+
+        $this->passthru = false;
         $process->wait(function ($type, $buffer) {
             if (Process::ERR === $type) {
                 //echo 'ERR > '.$buffer;
@@ -147,18 +171,50 @@ class HostsProcess
 
     }
 
-    private function doCallback($cmd, $output)
+    protected function doCallback($cmd, $output)
     {
+        $message = $this->message;
+        if (is_array($this->callback) && $this->callback[1] === 'checkCallback') {
+            $message = $output;
+        }
+        if ($this->passthru) {
+            $message = $output;
+        }
 
-        call_user_func($this->callback, $this, $output);
-        // if (is_array(self::$callback)) {
-        //     call_user_func_array(self::$callback[0], self::$callback[1], $args);
-        // } else {
-            
-        // }
+        call_user_func($this->callback, $this, $message);
     }
 
-    private static function isValidDomainName($domain_name)
+    protected function validHost($host)
+    {
+        if ($host === null) {
+            return;
+        }
+        if (false === $this->isValidDomainName($host)) {
+            throw new \RuntimeException('Domain invalid');
+        }
+    }
+
+    protected function validIp($ip)
+    {
+        if ($ip === null) {
+            return;
+        }
+        if (false === filter_var($ip, FILTER_VALIDATE_IP)) {
+            throw new \RuntimeException('IP invalid');
+        }
+    }
+
+    protected function validCallback($callback)
+    {
+        if ($callback == null) {
+            return;
+        }
+        if (!is_callable($callback)) {
+            throw new \RuntimeException('IP invalid');
+        }
+    }
+
+    protected function isValidDomainName($domain_name)
     {
         return (preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain_name) //valid chars check
             && preg_match("/^.{1,253}$/", $domain_name) //overall length check

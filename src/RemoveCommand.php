@@ -35,6 +35,6 @@ class RemoveCommand extends BaseCommand
     {
         $host = $input->getArgument('host');
 
-        $status = $this->hostProcess->remove($host, false);
+        $this->hostProcess->remove($host)->run();
     }
 }

@@ -36,7 +36,6 @@ class UpdateCommand extends BaseCommand
         $host   = $input->getArgument('host');
         $ip     = $input->getArgument('ip');
 
-        $status = $this->hostProcess->update($host, $ip);
-
+        $this->hostProcess->update($host, $ip)->run();
     }
 }

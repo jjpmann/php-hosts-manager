@@ -33,10 +33,10 @@ class AddCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $host = $input->getArgument('host');
-        $ip = $input->getArgument('ip');
+        $host   = $input->getArgument('host');
+        $ip     = $input->getArgument('ip');
 
-        $status = $this->hostProcess->add($host, $ip);
+        $this->hostProcess->add($host, $ip)->run();
 
     }
 }
