@@ -1,6 +1,6 @@
 # php-hosts-manager
 
-__v0.0.1__
+__v0.0.3__
 
 PHP CLI for managing local hosts file
 
@@ -17,7 +17,7 @@ __or global__
 
 ## quick intro
 
-    Hosts Manager version 0.1
+    Hosts Manager version 0.3
 
     Usage:
       command [options] [arguments]
@@ -42,5 +42,7 @@ __or global__
 
 ## ToDo
 
-0. Stop 'Add' when host exists (the bash script isn't doing this for some reason)
-0. Add Tests
+0. ~~Stop 'Add' when host exists ~~
+0. ~~Add Tests~~
+0. Add some features
+
