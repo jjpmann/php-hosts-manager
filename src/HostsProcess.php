@@ -45,6 +45,8 @@ class HostsProcess
             $this->callback = $callback;
         }
 
+        $this->passthru = false;
+
         return $this;
     }
 
@@ -87,13 +89,13 @@ class HostsProcess
     public function check($host, $callback = null)
     {
         $this->create("check $host", $host, null, false, $callback);
+        $this->passthru = true;
         return $this;
     }
 
     public function rollback($callback = null)
     {
         $this->create('rollback', null, null, true, $callback);
-        
         $this->message = "You have rolled back your Hosts file.\n";
         return $this;
     }
@@ -112,7 +114,7 @@ class HostsProcess
     
     public function run()
     {
-        $this->runScript($this->cmd, $this->sudo);
+        $this->runScript($this->cmd, $this->sudo);        
         return $this;
     }
 
@@ -122,7 +124,6 @@ class HostsProcess
         $this->callback = [$this, 'checkCallback'];
 
         $this->runScript("check {$this->host}", false);
-
     }
 
     protected function checkCallback($obj, $output)
@@ -146,14 +147,12 @@ class HostsProcess
 
         if ($sudo) {
             $script = "sudo $script";
-            $this->passthru = true;
+            //$this->passthru = true;
         }
 
         $process = new Process("$script $cmd");
         $process->start();
 
-
-        $this->passthru = false;
         $process->wait(function ($type, $buffer) {
             if (Process::ERR === $type) {
                 //echo 'ERR > '.$buffer;
@@ -168,11 +167,11 @@ class HostsProcess
         }
 
         $this->doCallback($cmd, trim($process->getOutput()));
-
     }
 
     protected function doCallback($cmd, $output)
     {
+        
         $message = $this->message;
         if (is_array($this->callback) && $this->callback[1] === 'checkCallback') {
             $message = $output;

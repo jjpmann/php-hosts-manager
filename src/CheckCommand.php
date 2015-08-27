@@ -32,7 +32,9 @@ class CheckCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-
+        if ($this->bypass) {
+            return;
+        }
         $host = $input->getArgument('host');
 
         $this->hostProcess->check($host)->run();

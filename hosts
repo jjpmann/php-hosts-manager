@@ -19,4 +19,6 @@ $app->add(new HostsManager\CheckCommand);
 $app->add(new HostsManager\RollbackCommand);
 $app->add(new HostsManager\AddCommand);
 
+$app->add(new HostsManager\TestCommand);
+
 $app->run();

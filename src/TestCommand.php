@@ -2,11 +2,18 @@
 
 namespace HostsManager;
 
+
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AddCommand extends BaseCommand
+
+
+class TestCommand extends BaseCommand
 {
 
     /**
@@ -17,12 +24,10 @@ class AddCommand extends BaseCommand
     protected function configure()
     {
         $this
-            ->setName('add')
-            ->setDescription('Add domain/host to hosts file.')
-            ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains')
-            ->addArgument('ip', InputArgument::REQUIRED, 'IP address to be used');
+            ->setName('test')
+            ->setDescription('Testing stuff.');
 
-       $this->sudo = true;
+        $this->sudo = true;
 
     }
 
@@ -35,10 +40,22 @@ class AddCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $fs = new Filesystem();
+        $hostsfile = '/etc/hosts';
+        
+        try {
+            $fs->touch($hostsfile);
+            die('I touched that shit!');
+        } catch (Exception $e) {
+            echo "<pre>"; var_dump( $e ); exit;  
+        }
+
+        
+
         $host   = $input->getArgument('host');
         $ip     = $input->getArgument('ip');
 
-        $this->hostProcess->add($host, $ip)->run();
-
+        $this->hostProcess->update($host, $ip)->run();
     }
 }
