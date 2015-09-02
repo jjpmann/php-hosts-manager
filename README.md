@@ -1,6 +1,8 @@
 # php-hosts-manager
 
-__v0.0.3__
+[![StyleCI](https://styleci.io/repos/40988670/shield)](https://styleci.io/repos/40988670)
+
+__v0.0.4__
 
 PHP CLI for managing local hosts file
 
