@@ -2,14 +2,10 @@
 
 namespace HostsManager;
 
-use Symfony\Component\Process\Process;
-use Symfony\Component\Console\Output\OutputInterface;
-
 use Mockery as m;
 
 class HostsProcessTest extends \PHPUnit_Framework_TestCase
 {
-
     public function tearDown()
     {
         m::close();
@@ -23,16 +19,16 @@ class HostsProcessTest extends \PHPUnit_Framework_TestCase
 
     public function testClassCreateWithCallback()
     {
-        $func = function() { return true; };
+        $func = function () { return true; };
 
         $hp = new HostsProcess($func);
-        
+
         $this->assertInstanceOf(HostsProcess::class, $hp);
         $this->assertInstanceOf('Closure', $hp->callback);
         $this->assertSame($hp->callback, $func);
 
-        $func2 = function() { return false; };
-        
+        $func2 = function () { return false; };
+
         $hp->callback($func2);
         $this->assertInstanceOf('Closure', $hp->callback);
         $this->assertSame($hp->callback, $func2);
@@ -40,8 +36,8 @@ class HostsProcessTest extends \PHPUnit_Framework_TestCase
 
     public function testRunAddAttributes()
     {
-        $host   = 'test.app';
-        $ip     = '10.10.10.10';
+        $host = 'test.app';
+        $ip = '10.10.10.10';
 
         $hp = new HostsProcess();
 
@@ -54,8 +50,8 @@ class HostsProcessTest extends \PHPUnit_Framework_TestCase
 
     public function testRunUpdateAttributes()
     {
-        $host   = 'test.app';
-        $ip     = '10.10.10.10';
+        $host = 'test.app';
+        $ip = '10.10.10.10';
 
         $hp = new HostsProcess();
 
@@ -68,9 +64,9 @@ class HostsProcessTest extends \PHPUnit_Framework_TestCase
 
     public function testRunRemoveAttributes()
     {
-        $host   = 'test.app';
-        $ip     = null;
-        $message= "You have removed {$host} from your Hosts file.\n";
+        $host = 'test.app';
+        $ip = null;
+        $message = "You have removed {$host} from your Hosts file.\n";
 
         $hp = new HostsProcess();
 
@@ -84,9 +80,8 @@ class HostsProcessTest extends \PHPUnit_Framework_TestCase
 
     public function testRunCheckAttributes()
     {
-        $host   = 'test.app';
-        $ip     = null;
-        
+        $host = 'test.app';
+        $ip = null;
 
         $hp = new HostsProcess();
 
@@ -99,7 +94,7 @@ class HostsProcessTest extends \PHPUnit_Framework_TestCase
 
     public function testRunRollbackAttributes()
     {
-        $message   = "You have rolled back your Hosts file.\n";
+        $message = "You have rolled back your Hosts file.\n";
 
         $hp = new HostsProcess();
 
