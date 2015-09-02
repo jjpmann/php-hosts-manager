@@ -1,9 +1,10 @@
 # php-hosts-manager
 
-[![StyleCI](https://styleci.io/repos/40988670/shield)](https://styleci.io/repos/40988670)
+[![Latest Stable Version](https://poser.pugx.org/jjpmann/php-hosts-manager/v/stable)](https://packagist.org/packages/jjpmann/php-hosts-manager) 
 [![Build Status](https://travis-ci.org/jjpmann/php-hosts-manager.svg?branch=master)](https://travis-ci.org/jjpmann/php-hosts-manager)
-
-__v0.0.4__
+[![StyleCI](https://styleci.io/repos/40988670/shield)](https://styleci.io/repos/40988670)
+[![License](https://poser.pugx.org/jjpmann/php-hosts-manager/license)](https://packagist.org/packages/jjpmann/php-hosts-manager)
+[![Total Downloads](https://poser.pugx.org/jjpmann/php-hosts-manager/downloads)](https://packagist.org/packages/jjpmann/php-hosts-manager) 
 
 PHP CLI for managing local hosts file
 
