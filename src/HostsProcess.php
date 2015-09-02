@@ -2,20 +2,19 @@
 
 namespace HostsManager;
 
-use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class HostsProcess
 {
- 
-    protected $script = __DIR__ . '/update-hosts.sh';
+    protected $script = __DIR__.'/update-hosts.sh';
 
     protected $cmd;
-    protected $sudo   = true;
-    protected $host   = null;
-    protected $ip     = null;
+    protected $sudo = true;
+    protected $host = null;
+    protected $ip = null;
     protected $message;
-    
+
     protected $output;
     protected $callback;
     protected $previousCallback;
@@ -36,9 +35,9 @@ class HostsProcess
         $this->validHost($host);
         $this->validCallback($callback);
 
-        $this->cmd  = $cmd;
+        $this->cmd = $cmd;
         $this->host = $host;
-        $this->ip   = $ip;
+        $this->ip = $ip;
         $this->sudo = $sudo;
 
         if ($callback) {
@@ -53,13 +52,14 @@ class HostsProcess
         if (isset($this->$name)) {
             return $this->$name;
         }
+
         return false;
     }
 
     public function add($host, $ip, $callback = null)
-    {   
+    {
         $this->create("check $host", $host, $ip, true, $callback);
-        
+
         $this->previousCallback = $this->callback;
         $this->callback = [$this, 'checkCallback'];
 
@@ -69,15 +69,16 @@ class HostsProcess
     public function remove($host, $callback = null)
     {
         $this->create("remove $host", $host, null, true, $callback);
-        
+
         $this->message = "You have removed {$host} from your Hosts file.\n";
+
         return $this;
     }
 
     public function update($host, $ip, $callback = null)
     {
         $this->create("check $host", $host, $ip, true, $callback);
-    
+
         $this->previousCallback = $this->callback;
         $this->callback = [$this, 'checkCallback'];
 
@@ -87,32 +88,37 @@ class HostsProcess
     public function check($host, $callback = null)
     {
         $this->create("check $host", $host, null, false, $callback);
+
         return $this;
     }
 
     public function rollback($callback = null)
     {
         $this->create('rollback', null, null, true, $callback);
-        
+
         $this->message = "You have rolled back your Hosts file.\n";
+
         return $this;
     }
 
     public function output(OutputInterface $output)
     {
         $this->output = $output;
+
         return $this;
     }
 
     public function callback($callback)
     {
         $this->callback = $callback;
+
         return $this;
     }
-    
+
     public function run()
     {
         $this->runScript($this->cmd, $this->sudo);
+
         return $this;
     }
 
@@ -122,7 +128,6 @@ class HostsProcess
         $this->callback = [$this, 'checkCallback'];
 
         $this->runScript("check {$this->host}", false);
-
     }
 
     protected function checkCallback($obj, $output)
@@ -134,14 +139,12 @@ class HostsProcess
             $this->runScript("add {$this->host} {$this->ip}");
         } else {
             $this->message = "Updating  {$this->host} to {$this->ip}\n";
-            $this->runScript("update {$this->host} {$this->ip}");    
+            $this->runScript("update {$this->host} {$this->ip}");
         }
-        
     }
 
     protected function runScript($cmd, $sudo = true)
     {
-
         $script = $this->script;
 
         if ($sudo) {
@@ -152,7 +155,6 @@ class HostsProcess
         $process = new Process("$script $cmd");
         $process->start();
 
-
         $this->passthru = false;
         $process->wait(function ($type, $buffer) {
             if (Process::ERR === $type) {
@@ -161,14 +163,13 @@ class HostsProcess
                 //echo 'OUT > '.$buffer;
             }
         });
-         
+
         // executes after the command finishes
         if (!$process->isSuccessful()) {
             throw new \RuntimeException($process->getErrorOutput());
         }
 
         $this->doCallback($cmd, trim($process->getOutput()));
-
     }
 
     protected function doCallback($cmd, $output)
@@ -217,7 +218,7 @@ class HostsProcess
     protected function isValidDomainName($domain_name)
     {
         return (preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain_name) //valid chars check
-            && preg_match("/^.{1,253}$/", $domain_name) //overall length check
-            && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain_name)   ); //length of each label
+            && preg_match('/^.{1,253}$/', $domain_name) //overall length check
+            && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain_name)); //length of each label
     }
 }
