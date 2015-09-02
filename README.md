@@ -1,6 +1,7 @@
 # php-hosts-manager
 
 [![StyleCI](https://styleci.io/repos/40988670/shield)](https://styleci.io/repos/40988670)
+[![Build Status](https://travis-ci.org/jjpmann/php-hosts-manager.svg?branch=master)](https://travis-ci.org/jjpmann/php-hosts-manager)
 
 __v0.0.4__
 
