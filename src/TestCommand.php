@@ -16,6 +16,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 class TestCommand extends BaseCommand
 {
 
+
+
     /**
      * Configure the command options.
      *
@@ -40,22 +42,25 @@ class TestCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-
+        if ($this->bypass) {
+            return;
+        }
+        
         $fs = new Filesystem();
         $hostsfile = '/etc/hosts';
         
         try {
             $fs->touch($hostsfile);
-            die('I touched that shit!');
-        } catch (Exception $e) {
-            echo "<pre>"; var_dump( $e ); exit;  
+        } catch (RuntimeException $e) {
+            //echo "<pre>"; var_dump( $e ); exit;  
         }
 
+        echo "<info>Done</info>\n";
         
 
-        $host   = $input->getArgument('host');
-        $ip     = $input->getArgument('ip');
+        // $host   = $input->getArgument('host');
+        // $ip     = $input->getArgument('ip');
 
-        $this->hostProcess->update($host, $ip)->run();
+        // $this->hostProcess->update($host, $ip)->run();
     }
 }

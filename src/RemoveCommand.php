@@ -21,7 +21,7 @@ class RemoveCommand extends BaseCommand
             ->setDescription('Remove domain/host from hosts file.')
             ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains to be removed');
             
-
+        $this->sudo = true;
     }
 
     /**
@@ -36,5 +36,8 @@ class RemoveCommand extends BaseCommand
         $host = $input->getArgument('host');
 
         $this->hostProcess->remove($host)->run();
+
+        echo "<info>Done</info>\n";
+
     }
 }

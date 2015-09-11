@@ -11,7 +11,7 @@ if (file_exists(__DIR__.'/vendor/autoload.php')) {
 }
 
 
-echo "<pre>"; var_dump( implode(' ', $_SERVER['argv']) ); exit;
+//echo "<pre>"; var_dump( implode(' ', $_SERVER['argv']) ); exit;
 
 
 use Symfony\Component\Filesystem\Filesystem;
@@ -21,7 +21,7 @@ $fs = new Filesystem();
 
 $hostsfile = '/etc/hosts';
 
-echo exec('whoami'); 
+echo exec('whoami') . "\n"; 
 
 
 try {

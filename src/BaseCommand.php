@@ -35,6 +35,7 @@ class BaseCommand extends Command
 
     public function initialize(InputInterface $input, OutputInterface $output)
     {
+
         if ($this->sudo && exec('whoami') !== 'root') {
   
             $cmd = implode(' ', $_SERVER['argv']);
