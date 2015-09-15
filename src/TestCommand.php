@@ -29,7 +29,7 @@ class TestCommand extends BaseCommand
             ->setName('test')
             ->setDescription('Testing stuff.');
 
-        $this->sudo = true;
+        //$this->sudo = true;
 
     }
 
@@ -42,10 +42,16 @@ class TestCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
+
         if ($this->bypass) {
             return;
         }
         
+
+        $hostsfile = new HostsFile();
+
+        die('--done--');
+
         $fs = new Filesystem();
         $hostsfile = '/etc/hosts';
         

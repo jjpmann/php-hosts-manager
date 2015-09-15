@@ -14,20 +14,20 @@ class BaseCommand extends Command
 
     protected $sudo     = false;
     protected $bypass   = false;
+    protected $check    = true;
 
     public function __construct($name = null)
     {
         $this->hostProcess = new HostsProcess;
-
         parent::__construct($name);
     }
 
     public function run(InputInterface $input, OutputInterface $output)
     {
 
-        $this->hostProcess->callback(function ($obj, $data) use ($output) {
-            $output->write($data);
-        });
+        // $this->hostProcess->callback(function ($obj, $data) use ($output) {
+        //     $output->write($data);
+        // });
 
         parent::run($input, $output);
     }
@@ -36,18 +36,18 @@ class BaseCommand extends Command
     public function initialize(InputInterface $input, OutputInterface $output)
     {
 
-        if ($this->sudo && exec('whoami') !== 'root') {
-  
-            $cmd = implode(' ', $_SERVER['argv']);
+        // if ($this->sudo && exec('whoami') !== 'root') {
 
-            SudoProcess::runAsRoot($cmd, function ($obj, $data) use ($output) {
+        //     $cmd = implode(' ', $_SERVER['argv']);
+
+        //     SudoProcess::runAsRoot($cmd, function ($obj, $data) use ($output) {
                 
-                $output->write($data);
-            });
+        //         $output->write($data);
+        //     });
             
-            $this->bypass = true;
+        //     $this->bypass = true;
 
-        }
+        // }
 
     }
 
