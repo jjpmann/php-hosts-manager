@@ -7,7 +7,7 @@ use Symfony\Component\Process\Process;
 
 class HostsProcess
 {
-    protected $script = __DIR__.'/update-hosts.sh';
+    protected $script;
 
     protected $cmd;
     protected $sudo = true;
@@ -22,6 +22,7 @@ class HostsProcess
 
     public function __construct($callback = null)
     {
+        $this->script = __DIR__.'/update-hosts.sh';
         // $this->cmd  = $cmd;
         // $this->host = $host;
         // $this->ip   = $ip;
