@@ -31,7 +31,7 @@ class SudoProcess
             throw new SudoProcessException($process->getErrorOutput());
         }
 
-        //call_user_func($callback, false, $process->getOutput());
+        call_user_func($callback, false, $process->getOutput());
 
     }
 }

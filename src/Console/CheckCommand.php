@@ -41,5 +41,12 @@ class CheckCommand extends BaseCommand
 
         $output->writeln($msg);
 
+        if ($valid) {
+            $output->writeLn($valid);
+        }
+        
+
+        
+
     }
 }

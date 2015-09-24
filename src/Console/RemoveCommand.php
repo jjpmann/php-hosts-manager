@@ -33,13 +33,10 @@ class RemoveCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        
+        $host = $input->getArgument('host');
 
-        // $host = $input->getArgument('host');
+        $remove = $this->hostFile->remove($host);
 
-        // $this->hostProcess->remove($host)->run();
-
-        // "<info> DONE Done</info>\n";
-
+        $output->writeLn("$host was removed from file.");
     }
 }

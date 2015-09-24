@@ -22,6 +22,7 @@ class UpdateCommand extends BaseCommand
             ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains')
             ->addArgument('ip', InputArgument::REQUIRED, 'IP address to be used');
 
+        $this->sudo = true;
     }
 
     /**
@@ -36,6 +37,8 @@ class UpdateCommand extends BaseCommand
         $host   = $input->getArgument('host');
         $ip     = $input->getArgument('ip');
 
-        $this->hostProcess->update($host, $ip)->run();
+        $this->hostFile->update($host, $ip);
+
+        $output->writeLn("\"$ip $host\" was updated in file.");
     }
 }

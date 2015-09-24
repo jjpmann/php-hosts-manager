@@ -40,6 +40,6 @@ class AddCommand extends BaseCommand
 
         $this->hostFile->add($host, $ip);
 
-        return 1;
+        $output->writeLn("\"$ip $host\" was added to file.");
     }   
 }

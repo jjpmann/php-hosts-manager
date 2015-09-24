@@ -61,9 +61,9 @@ class HostsFileTest extends \PHPUnit_Framework_TestCase
     {
         $hp = new HostsFile(__DIR__.'/file.txt');
         $this->assertFalse($hp->check('test.a'));
-        $this->assertTrue($hp->check('test.app'));
+        $this->assertEquals($hp->check('test.app'), "127.0.0.4 test.app");
         $this->assertFalse($hp->check('test.cm'));
-        $this->assertTrue($hp->check('test.com'));
+        $this->assertEquals($hp->check('test.com'), "127.0.0.3 test.com");
         $this->assertFalse($hp->check('test.appp'));
     }
 
@@ -71,7 +71,7 @@ class HostsFileTest extends \PHPUnit_Framework_TestCase
     {
         $hp = new HostsFile(__DIR__.'/file.txt');
         $this->assertTrue($hp->add('google.com', '127.0.0.3'));
-        $this->assertTrue($hp->check('google.com'));
+        $this->assertEquals($hp->check('google.com'), '127.0.0.3 google.com');
     }
 
     public function testExceptionAdd()

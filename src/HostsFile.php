@@ -91,7 +91,7 @@ class HostsFile
         while (!$this->file->eof()) {
             $pattern = '/\b'.$host.'\b/i';
             if (preg_match($pattern, $this->file->current())) {
-                $valid = true;
+                $valid = trim($this->file->current());
                 break; // Once you find the string, you should break out the loop.
             }
             $this->file->next();
@@ -130,6 +130,24 @@ class HostsFile
     }
 
     /**
+     * update host in hosts file
+     *
+     * @param string The $host to be added to the hosts file
+     * @param string The $ip to be added along with host to hosts file
+     *
+     * @throws RuntimeException if already exists or cant write to file
+     * 
+     * @return bool
+     **/
+    public function update($host, $ip)
+    {
+        $this->validHost($host);
+        $this->validIp($ip);
+
+        return $this->remove($host) && $this->add($host, $ip);
+    }
+
+    /**
      * remove host from hosts file
      *
      * @param string The $host to be removed to the hosts file
@@ -152,7 +170,6 @@ class HostsFile
         while (!$file->eof()) {
             $pattern = '/\b'.$host.'\b/i';
             if (preg_match($pattern, $file->current())) {
-                die('match');
                 $write = $file->fwrite('');
                 break;
             }
