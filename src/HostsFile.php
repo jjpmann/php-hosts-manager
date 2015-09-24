@@ -42,14 +42,10 @@ class HostsFile
      **/
     protected function init($filepath)
     {
-        try {
-            $this->file = new \SplFileObject($filepath);
-        } catch (Exception $e) {
-            throw new \LogicException('This is not a file', 1);
-        }
+        $this->file = new \SplFileObject($filepath);
 
         if (!$this->file->isFile()) {
-            throw new \Exception('This is not a file', 1);
+            throw new \LogicException('This is not a file', 1);
         }
 
         if (!$this->file->isReadable()) {
