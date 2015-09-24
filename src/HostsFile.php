@@ -60,7 +60,7 @@ class HostsFile
      * grab protected/private attributes.
      *
      * @param string $name of a class attribute
-     * 
+     *
      * @return mixed
      **/
     public function __get($name)
@@ -106,7 +106,7 @@ class HostsFile
      * @param string The $ip   to be added along with host to hosts file
      *
      * @throws RuntimeException if already exists or cant write to file
-     * 
+     *
      * @return bool
      **/
     public function add($host, $ip)
@@ -118,7 +118,7 @@ class HostsFile
             throw new \RuntimeException('Host already exists in the file');
         }
 
-        $this->back();
+        $this->backup();
 
         $record = "\n$ip $host";
         $file = new \SplFileObject($this->filepath, 'a');
@@ -138,7 +138,7 @@ class HostsFile
      * @param string The $ip   to be added along with host to hosts file
      *
      * @throws RuntimeException if already exists or cant write to file
-     * 
+     *
      * @return bool
      **/
     protected function backup()
@@ -152,7 +152,7 @@ class HostsFile
      * @param string The $ip   to be added along with host to hosts file
      *
      * @throws RuntimeException if already exists or cant write to file
-     * 
+     *
      * @return bool
      **/
     public function update($host, $ip)
@@ -169,7 +169,7 @@ class HostsFile
      * @param string The $host to be removed to the hosts file
      *
      * @throws RuntimeException if host does no exists or cant write to file
-     * 
+     *
      * @return bool
      **/
     public function remove($host)
@@ -180,7 +180,7 @@ class HostsFile
             throw new \RuntimeException('Host does not exists in the file');
         }
 
-        $this->back();
+        $this->backup();
 
         $file = new \SplFileObject($this->filepath, 'w+');
 

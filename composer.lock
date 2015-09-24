@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b2041084a381d6f5e13bac1560ba2c93",
+    "hash": "292ca63c46761161e9fda5653fbb63da",
+    "content-hash": "f649bc4545ceb7cac7c54f7756983fe8",
     "packages": [
         {
             "name": "symfony/console",
@@ -261,6 +262,40 @@
                 "test"
             ],
             "time": "2015-05-11 14:41:42"
+        },
+        {
+            "name": "laravel/homestead",
+            "version": "v2.1.7",
+            "source": {
+                "type": "git",
+                "url": "git@vim.git.beanstalkapp.com:/vim/lmo-homestead.git",
+                "reference": "5690eca04402f6bc16b6fb785daeb0f435b65299"
+            },
+            "require": {
+                "php": ">=5.4",
+                "symfony/console": "~2.0",
+                "symfony/process": "~2.0"
+            },
+            "bin": [
+                "homestead"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Homestead\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "A virtual machine for web artisans.",
+            "time": "2015-09-02 02:20:48"
         },
         {
             "name": "mockery/mockery",
