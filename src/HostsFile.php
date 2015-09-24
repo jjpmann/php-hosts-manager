@@ -2,20 +2,17 @@
 
 namespace HostsManager;
 
-use Symfony\Component\Process\Process;
-use Symfony\Component\Console\Output\OutputInterface;
-
 class HostsFile
 {
     /**
-     * File Resource
+     * File Resource.
      *
      * @var resource
      **/
     protected $file; // resource
 
     /**
-     * Full file path to the file resouce
+     * Full file path to the file resouce.
      *
      * @var string
      **/
@@ -25,7 +22,6 @@ class HostsFile
      * Constructor.
      *
      * @param string|null $filepath The path of the hosts file, normally /etc/hosts as set in default
-     *
      */
     public function __construct($filepath = '/etc/hosts')
     {
@@ -33,27 +29,24 @@ class HostsFile
     }
 
     /**
-     * boots up class by using filepath to create file object
+     * boots up class by using filepath to create file object.
      *
      * @param string|null $filepath The path of the hosts file, normally /etc/hosts as set in default
-     * 
-     * @return void
      **/
     protected function init($filepath)
     {
         try {
-            $this->file = new \SplFileObject($filepath);    
+            $this->file = new \SplFileObject($filepath);
         } catch (Exception $e) {
-            throw new \LogicException("This is not a file", 1);
+            throw new \LogicException('This is not a file', 1);
         }
-        
 
         if (!$this->file->isFile()) {
-            throw new \Exception("This is not a file", 1);
+            throw new \Exception('This is not a file', 1);
         }
 
         if (!$this->file->isReadable()) {
-            throw new \Exception("This file is not readable", 1);
+            throw new \Exception('This file is not readable', 1);
         }
 
         if (!$this->file->isWritable()) {
@@ -64,7 +57,7 @@ class HostsFile
     }
 
     /**
-     * grab protected/private attributes
+     * grab protected/private attributes.
      *
      * @param string $name of a class attribute
      * 
@@ -75,13 +68,15 @@ class HostsFile
         if (isset($this->$name)) {
             return $this->$name;
         }
+
         return false;
     }
 
     /**
-     * check hosts file if $host is present
+     * check hosts file if $host is present.
      *
      * @param string The $host is what we are searching for in the hosts file
+     *
      * @return bool
      **/
     public function check($host)
@@ -105,10 +100,10 @@ class HostsFile
     }
 
     /**
-     * add new host to hosts file
+     * add new host to hosts file.
      *
      * @param string The $host to be added to the hosts file
-     * @param string The $ip to be added along with host to hosts file
+     * @param string The $ip   to be added along with host to hosts file
      *
      * @throws RuntimeException if already exists or cant write to file
      * 
@@ -123,6 +118,8 @@ class HostsFile
             throw new \RuntimeException('Host already exists in the file');
         }
 
+        $this->back();
+
         $record = "\n$ip $host";
         $file = new \SplFileObject($this->filepath, 'a');
         $ok = $file->fwrite($record);
@@ -130,14 +127,29 @@ class HostsFile
         if (!$ok) {
             throw new \RuntimeException('Could not write to file');
         }
+
         return true;
     }
 
     /**
-     * update host in hosts file
+     * update host in hosts file.
      *
      * @param string The $host to be added to the hosts file
-     * @param string The $ip to be added along with host to hosts file
+     * @param string The $ip   to be added along with host to hosts file
+     *
+     * @throws RuntimeException if already exists or cant write to file
+     * 
+     * @return bool
+     **/
+    protected function backup()
+    {
+    }
+
+    /**
+     * update host in hosts file.
+     *
+     * @param string The $host to be added to the hosts file
+     * @param string The $ip   to be added along with host to hosts file
      *
      * @throws RuntimeException if already exists or cant write to file
      * 
@@ -152,7 +164,7 @@ class HostsFile
     }
 
     /**
-     * remove host from hosts file
+     * remove host from hosts file.
      *
      * @param string The $host to be removed to the hosts file
      *
@@ -163,10 +175,12 @@ class HostsFile
     public function remove($host)
     {
         $this->validHost($host);
-        
+
         if (!$this->check($host)) {
             throw new \RuntimeException('Host does not exists in the file');
         }
+
+        $this->back();
 
         $file = new \SplFileObject($this->filepath, 'w+');
 
@@ -183,27 +197,25 @@ class HostsFile
         if ($write) {
             throw new \RuntimeException('Could not write to file');
         }
-        
+
         return true;
     }
 
     /**
-     * validates host and/or ip
+     * validates host and/or ip.
      *
      * @throws RuntimeException is domain is not valid
-     * @return void
      **/
     public function validate($host = null, $ip = null)
     {
         $this->validHost($host);
         $this->validIp($ip);
-    }    
+    }
 
     /**
-     * validates host name
+     * validates host name.
      *
      * @throws RuntimeException is domain is not valid
-     * @return void
      **/
     protected function validHost($host)
     {
@@ -216,10 +228,9 @@ class HostsFile
     }
 
     /**
-     * validates ip
+     * validates ip.
      *
      * @throws RuntimeException is IP is not valid
-     * @return void
      **/
     protected function validIp($ip)
     {
@@ -232,10 +243,9 @@ class HostsFile
     }
 
     /**
-     * validates callback is callable
+     * validates callback is callable.
      *
      * @throws RuntimeException is callback cant be called
-     * @return void
      **/
     protected function validCallback($callback)
     {
@@ -248,14 +258,14 @@ class HostsFile
     }
 
     /**
-     * helper function to validate domain name
+     * helper function to validate domain name.
      *
      * @return boot
      **/
     protected function isValidDomainName($domain_name)
     {
         return (preg_match("/^([a-z\d](-*[a-z\d])*)(\.([a-z\d](-*[a-z\d])*))*$/i", $domain_name) //valid chars check
-            && preg_match("/^.{1,253}$/", $domain_name) //overall length check
-            && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain_name)   ); //length of each label
+            && preg_match('/^.{1,253}$/', $domain_name) //overall length check
+            && preg_match("/^[^\.]{1,63}(\.[^\.]{1,63})*$/", $domain_name)); //length of each label
     }
 }

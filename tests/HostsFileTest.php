@@ -2,14 +2,8 @@
 
 namespace HostsManager;
 
-use Symfony\Component\Process\Process;
-use Symfony\Component\Console\Output\OutputInterface;
-
-use Mockery as m;
-
 class HostsFileTest extends \PHPUnit_Framework_TestCase
 {
-
     protected function setUp()
     {
         copy(__DIR__.'/stub_file.txt', __DIR__.'/file.txt');
@@ -61,9 +55,9 @@ class HostsFileTest extends \PHPUnit_Framework_TestCase
     {
         $hp = new HostsFile(__DIR__.'/file.txt');
         $this->assertFalse($hp->check('test.a'));
-        $this->assertEquals($hp->check('test.app'), "127.0.0.4 test.app");
+        $this->assertEquals($hp->check('test.app'), '127.0.0.4 test.app');
         $this->assertFalse($hp->check('test.cm'));
-        $this->assertEquals($hp->check('test.com'), "127.0.0.3 test.com");
+        $this->assertEquals($hp->check('test.com'), '127.0.0.3 test.com');
         $this->assertFalse($hp->check('test.appp'));
     }
 

@@ -4,17 +4,13 @@ namespace HostsManager\Console;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use HostsManager\HostsProcess;
 use HostsManager\HostsFile;
 use HostsManager\SudoProcess;
 use HostsManager\SudoProcessException;
 
 class BaseCommand extends Command
 {
-
     protected $hostProcess;
 
     protected $sudo = false;
@@ -25,7 +21,6 @@ class BaseCommand extends Command
      * Constructor.
      *
      * @param string|null name of Command
-     *
      */
     public function __construct($name = null)
     {
@@ -42,12 +37,12 @@ class BaseCommand extends Command
     }
 
     /**
-     * shortcut to run hostFile validation with all inputs
+     * shortcut to run hostFile validation with all inputs.
      */
     protected function validate(InputInterface $input)
     {
-        $host   = $input->getArgument('host') ? $input->getArgument('host') : null;
-        $ip     = $input->hasArgument('ip') ? $input->getArgument('ip') : null;
+        $host = $input->getArgument('host') ? $input->getArgument('host') : null;
+        $ip = $input->hasArgument('ip') ? $input->getArgument('ip') : null;
 
         $this->hostFile->validate($host, $ip);
     }
@@ -60,7 +55,6 @@ class BaseCommand extends Command
         $this->validate($input);
 
         if ($this->sudo && exec('whoami') !== 'root') {
-
             $cmd = implode(' ', $_SERVER['argv']);
 
             try {
@@ -72,7 +66,7 @@ class BaseCommand extends Command
                 $str = implode("\n", array_slice(array_slice($arr, 4), 0, -4));
                 throw new \RuntimeException(trim($str));
             }
-            
+
             exit;
         }
     }

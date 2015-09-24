@@ -10,8 +10,6 @@ class AddCommand extends BaseCommand
 {
     /**
      * Configure the command options.
-     *
-     * @return void
      */
     protected function configure()
     {
@@ -21,8 +19,7 @@ class AddCommand extends BaseCommand
             ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains')
             ->addArgument('ip', InputArgument::REQUIRED, 'IP address to be used');
 
-       $this->sudo = true;
-
+        $this->sudo = true;
     }
 
     /**
@@ -30,8 +27,6 @@ class AddCommand extends BaseCommand
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -41,5 +36,5 @@ class AddCommand extends BaseCommand
         $this->hostFile->add($host, $ip);
 
         $output->writeLn("\"$ip $host\" was added to file.");
-    }   
+    }
 }

@@ -3,18 +3,15 @@
 namespace HostsManager;
 
 use Symfony\Component\Process\Process;
-use HostsManager\SudoProcessException;
 
 class SudoProcess
 {
-    
     protected static $cmd;
 
     public static function runAsRoot($cmd, \Closure $callback)
     {
-        
         self::$cmd = $cmd = "sudo $cmd";
-        
+
         $process = new Process($cmd);
         $process->start();
 
@@ -32,6 +29,5 @@ class SudoProcess
         }
 
         call_user_func($callback, false, $process->getOutput());
-
     }
 }

@@ -10,8 +10,6 @@ class RemoveCommand extends BaseCommand
 {
     /**
      * Configure the command options.
-     *
-     * @return void
      */
     protected function configure()
     {
@@ -19,7 +17,7 @@ class RemoveCommand extends BaseCommand
             ->setName('remove')
             ->setDescription('Remove domain/host from hosts file.')
             ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains to be removed');
-            
+
         $this->sudo = true;
     }
 
@@ -28,8 +26,6 @@ class RemoveCommand extends BaseCommand
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {

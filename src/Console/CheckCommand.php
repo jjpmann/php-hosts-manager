@@ -10,8 +10,6 @@ class CheckCommand extends BaseCommand
 {
     /**
      * Configure the command options.
-     *
-     * @return void
      */
     protected function configure()
     {
@@ -26,8 +24,6 @@ class CheckCommand extends BaseCommand
      *
      * @param \Symfony\Component\Console\Input\InputInterface   $input
      * @param \Symfony\Component\Console\Output\OutputInterface $output
-     *
-     * @return void
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
@@ -42,6 +38,5 @@ class CheckCommand extends BaseCommand
         if ($valid) {
             $output->writeLn($valid);
         }
-        
     }
 }
