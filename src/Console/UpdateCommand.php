@@ -1,12 +1,12 @@
 <?php
 
-namespace HostsManager;
+namespace HostsManager\Console;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class CheckCommand extends BaseCommand
+class UpdateCommand extends BaseCommand
 {
     /**
      * Configure the command options.
@@ -16,9 +16,12 @@ class CheckCommand extends BaseCommand
     protected function configure()
     {
         $this
-            ->setName('check')
-            ->setDescription('Check to see if domain/host exists in host file')
-            ->addArgument('host', InputArgument::REQUIRED, 'Single domain');
+            ->setName('update')
+            ->setDescription('Update domain/host in hosts file.')
+            ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains')
+            ->addArgument('ip', InputArgument::REQUIRED, 'IP address to be used');
+
+        $this->sudo = true;
     }
 
     /**
@@ -32,7 +35,10 @@ class CheckCommand extends BaseCommand
     public function execute(InputInterface $input, OutputInterface $output)
     {
         $host = $input->getArgument('host');
+        $ip = $input->getArgument('ip');
 
-        $this->hostProcess->check($host)->run();
+        $this->hostFile->update($host, $ip);
+
+        $output->writeLn("\"$ip $host\" was updated in file.");
     }
 }

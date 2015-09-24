@@ -1,12 +1,12 @@
 <?php
 
-namespace HostsManager;
+namespace HostsManager\Console;
 
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RemoveCommand extends BaseCommand
+class RollbackCommand extends Command
 {
     /**
      * Configure the command options.
@@ -16,9 +16,8 @@ class RemoveCommand extends BaseCommand
     protected function configure()
     {
         $this
-            ->setName('remove')
-            ->setDescription('Remove domain/host from hosts file.')
-            ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains to be removed');
+            ->setName('rollback')
+            ->setDescription('Reverts the last change.');
     }
 
     /**
@@ -31,8 +30,6 @@ class RemoveCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $host = $input->getArgument('host');
-
-        $this->hostProcess->remove($host)->run();
+        //$this->hostProcess->rollback()->run();
     }
 }

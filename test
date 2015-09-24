@@ -1,0 +1,38 @@
+#! /usr/bin/env php
+
+<?php
+
+error_reporting(E_ALL);
+
+if (file_exists(__DIR__.'/vendor/autoload.php')) {
+    require __DIR__.'/vendor/autoload.php';
+} else {
+    require __DIR__.'/../../autoload.php';
+}
+
+
+//echo "<pre>"; var_dump( implode(' ', $_SERVER['argv']) ); exit;
+
+
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+
+$fs = new Filesystem();
+
+$hostsfile = '/etc/hosts';
+
+echo exec('whoami') . "\n"; 
+
+
+try {
+    $fs->touch($hostsfile);
+    die('I touched that shit!');
+} catch (Exception $e) {
+    echo "<pre>"; var_dump( $e ); exit;  
+}
+
+
+function canEdit()
+{
+
+}

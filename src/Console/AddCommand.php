@@ -1,12 +1,12 @@
 <?php
 
-namespace HostsManager;
+namespace HostsManager\Console;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateCommand extends BaseCommand
+class AddCommand extends BaseCommand
 {
     /**
      * Configure the command options.
@@ -16,10 +16,13 @@ class UpdateCommand extends BaseCommand
     protected function configure()
     {
         $this
-            ->setName('update')
-            ->setDescription('Update domain/host in hosts file.')
+            ->setName('add')
+            ->setDescription('Add domain/host to hosts file.')
             ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains')
             ->addArgument('ip', InputArgument::REQUIRED, 'IP address to be used');
+
+       $this->sudo = true;
+
     }
 
     /**
@@ -35,6 +38,8 @@ class UpdateCommand extends BaseCommand
         $host = $input->getArgument('host');
         $ip = $input->getArgument('ip');
 
-        $this->hostProcess->update($host, $ip)->run();
-    }
+        $this->hostFile->add($host, $ip);
+
+        $output->writeLn("\"$ip $host\" was added to file.");
+    }   
 }

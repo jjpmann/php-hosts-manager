@@ -1,0 +1,5 @@
+# Hosts Sample
+
+127.0.0.3 test.com
+127.0.0.4 test.app
+127.0.0.5 test.net
