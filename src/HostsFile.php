@@ -19,6 +19,13 @@ class HostsFile
     protected $filepath;
 
     /**
+     * Count of host file backups.
+     *
+     * @var int
+     **/
+    protected $backups = 3;
+
+    /**
      * Constructor.
      *
      * @param string|null $filepath The path of the hosts file, normally /etc/hosts as set in default
@@ -132,6 +139,23 @@ class HostsFile
     }
 
     /**
+     * roll back to latest backup.
+     *
+     * @throws RuntimeException if no backups are found
+     **/
+    public function rollback()
+    {
+        $backupFile = "{$this->filepath}.bkup.1";
+
+        if (!file_exists($backupFile)) {
+            throw new \RuntimeException("Backup file ({$backupFile}) does not exists.");
+        }
+        copy($backupFile, $this->filepath);
+
+        return true;
+    }
+
+    /**
      * update host in hosts file.
      *
      * @param string The $host to be added to the hosts file
@@ -143,6 +167,16 @@ class HostsFile
      **/
     protected function backup()
     {
+        $count = $this->backups - 1;
+        for ($i = $count; $i > 0; --$i) {
+            $backupFile = "{$this->filepath}.bkup.{$i}";
+            if (file_exists($backupFile)) {
+                copy($backupFile, "{$this->filepath}.bkup.".($i + 1));
+            }
+        }
+        copy($this->filepath, "{$this->filepath}.bkup.1");
+
+        return true;
     }
 
     /**
@@ -182,21 +216,22 @@ class HostsFile
 
         $this->backup();
 
-        $file = new \SplFileObject($this->filepath, 'w+');
+        $tmpFilePath = $this->filepath.'.tmp';
 
-        $write = false;
-        while (!$file->eof()) {
+        $tmpFile = new \SplFileObject($tmpFilePath, 'w+');
+
+        $this->file->rewind();
+
+        while (!$this->file->eof()) {
             $pattern = '/\b'.$host.'\b/i';
-            if (preg_match($pattern, $file->current())) {
-                $write = $file->fwrite('');
-                break;
+            if (!preg_match($pattern, $this->file->current())) {
+                $tmpFile->fwrite($this->file->current());
             }
-            $file->next();
+            $this->file->next();
         }
 
-        if ($write) {
-            throw new \RuntimeException('Could not write to file');
-        }
+        copy($tmpFilePath, $this->filepath);
+        unlink($tmpFilePath);
 
         return true;
     }

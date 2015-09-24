@@ -15,6 +15,8 @@ class BaseCommand extends Command
 
     protected $sudo = false;
 
+    protected $validate = true;
+
     protected $hostsfile = '/etc/hosts';
 
     /**
@@ -52,7 +54,9 @@ class BaseCommand extends Command
      */
     public function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->validate($input);
+        if ($this->validate) {
+            $this->validate($input);
+        }
 
         if ($this->sudo && exec('whoami') !== 'root') {
             $cmd = implode(' ', $_SERVER['argv']);

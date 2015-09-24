@@ -2,11 +2,10 @@
 
 namespace HostsManager\Console;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RollbackCommand extends Command
+class RollbackCommand extends BaseCommand
 {
     /**
      * Configure the command options.
@@ -16,6 +15,9 @@ class RollbackCommand extends Command
         $this
             ->setName('rollback')
             ->setDescription('Reverts the last change.');
+
+        $this->sudo = true;
+        $this->validate = false;
     }
 
     /**
@@ -26,6 +28,8 @@ class RollbackCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        //$this->hostProcess->rollback()->run();
+        $this->hostFile->rollback();
+
+        $output->writeLn('Rolled backed to latest backup.');
     }
 }

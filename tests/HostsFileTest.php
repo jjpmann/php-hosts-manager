@@ -11,6 +11,10 @@ class HostsFileTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
+        unlink(__DIR__.'/file.txt');
+        @unlink(__DIR__.'/file.txt.bkup.1');
+        @unlink(__DIR__.'/file.txt.bkup.2');
+        @unlink(__DIR__.'/file.txt.bkup.3');
     }
 
     public function testClassCreate()
@@ -80,6 +84,7 @@ class HostsFileTest extends \PHPUnit_Framework_TestCase
     {
         $hp = new HostsFile(__DIR__.'/file.txt');
         $this->assertTrue($hp->remove('test.app'));
+        $this->assertEquals($hp->check('test.com'), '127.0.0.3 test.com');
     }
 
     public function testExceptionRemove()
@@ -87,5 +92,11 @@ class HostsFileTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('RuntimeException');
         $hp = new HostsFile(__DIR__.'/file.txt');
         $hp->remove('not.here.app');
+    }
+
+    public function testRollback()
+    {
+        //$hp = new HostsFile(__DIR__.'/file.txt');
+        //$this->assertTrue($hp->remove('test.app'));
     }
 }
