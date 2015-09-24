@@ -22,13 +22,13 @@ class HostsFileTest extends \PHPUnit_Framework_TestCase
     public function testClassCreate()
     {
         $hp = new HostsFile();
-        $this->assertInstanceOf(HostsFile::class, $hp);
+        $this->assertInstanceOf('HostsManager\HostsFile', $hp);
     }
 
     public function testFileExists()
     {
         $hp = new HostsFile(__DIR__.'/file.txt');
-        $this->assertInstanceOf(HostsFile::class, $hp);
+        $this->assertInstanceOf('HostsManager\HostsFile', $hp);
     }
 
     public function testExceptionFileDoesNotExists()
