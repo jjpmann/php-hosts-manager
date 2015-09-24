@@ -1,13 +1,12 @@
 <?php
 
-namespace HostsManager;
+namespace HostsManager\Console;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class RollbackCommand extends Command
+class AddCommand extends BaseCommand
 {
 
     /**
@@ -18,8 +17,12 @@ class RollbackCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('rollback')
-            ->setDescription('Reverts the last change.');
+            ->setName('add')
+            ->setDescription('Add domain/host to hosts file.')
+            ->addArgument('host', InputArgument::REQUIRED, 'Single or Mutliple domains')
+            ->addArgument('ip', InputArgument::REQUIRED, 'IP address to be used');
+
+       $this->sudo = true;
 
     }
 
@@ -32,6 +35,11 @@ class RollbackCommand extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->hostProcess->rollback()->run();
-    }
+        $host   = $input->getArgument('host');
+        $ip     = $input->getArgument('ip');
+
+        $this->hostFile->add($host, $ip);
+
+        return 1;
+    }   
 }

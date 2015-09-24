@@ -1,6 +1,6 @@
 <?php
 
-namespace HostsManager;
+namespace HostsManager\Console;
 
 
 use Symfony\Component\Filesystem\Filesystem;

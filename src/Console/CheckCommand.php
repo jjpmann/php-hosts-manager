@@ -1,6 +1,6 @@
 <?php
 
-namespace HostsManager;
+namespace HostsManager\Console;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -32,32 +32,14 @@ class CheckCommand extends BaseCommand
      */
     public function execute(InputInterface $input, OutputInterface $output)
     {
-        $hostsfile = '/etc/hosts';
 
-        $handle = fopen($hostsfile, 'r');
-        $valid = false; // init as false
-        while (($buffer = fgets($handle)) !== false) {
-            if (strpos($buffer, $id) !== false) {
-                $valid = TRUE;
-                break; // Once you find the string, you should break out the loop.
-            }      
-        }
-        fclose($handle);
+        $host = $input->getArgument('host');
 
+        $valid = $this->hostFile->check($host);
 
+        $msg = $valid ? 'Host was found in the host file.' : 'Host was not found in the host file.';
 
-        // if ($this->bypass) {
-        //     return;
-        // }
-        // $host = $input->getArgument('host');
-
-        // $this->hostProcess->check($host)->run();
+        $output->writeln($msg);
 
     }
-
-    protected function inFile($str, $file)
-    {
-        
-    }
-
 }

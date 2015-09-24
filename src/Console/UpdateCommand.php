@@ -1,6 +1,6 @@
 <?php
 
-namespace HostsManager;
+namespace HostsManager\Console;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;

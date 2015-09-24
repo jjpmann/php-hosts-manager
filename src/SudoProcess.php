@@ -3,6 +3,7 @@
 namespace HostsManager;
 
 use Symfony\Component\Process\Process;
+use HostsManager\SudoProcessException;
 
 class SudoProcess
 {
@@ -27,11 +28,10 @@ class SudoProcess
 
         // executes after the command finishes
         if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getErrorOutput());
+            throw new SudoProcessException($process->getErrorOutput());
         }
 
-        call_user_func($callback, false, $process->getOutput());
+        //call_user_func($callback, false, $process->getOutput());
 
-        //echo $process->getOutput();      
     }
 }

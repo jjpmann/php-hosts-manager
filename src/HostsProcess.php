@@ -8,7 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class HostsProcess
 {
  
-    protected $script = __DIR__ . '/update-hosts.sh';
+    protected $script;
 
     protected $cmd;
     protected $sudo   = true;
@@ -23,10 +23,8 @@ class HostsProcess
 
     public function __construct($callback = null)
     {
-        // $this->cmd  = $cmd;
-        // $this->host = $host;
-        // $this->ip   = $ip;
-        // $this->sudo = $sudo;
+        $this->script = __DIR__ . '/update-hosts.sh';
+        
         $this->callback = $callback;
     }
 
