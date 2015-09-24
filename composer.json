@@ -16,7 +16,7 @@
     "require": {
         "php": ">=5.3.2",
         "symfony/console": "~2.0",
-        "symfony/process": "~2.0",
+        "symfony/process": "^2.7",
         "symfony/filesystem": "^2.7"
     },
     "require-dev": {

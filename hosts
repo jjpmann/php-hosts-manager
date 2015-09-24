@@ -12,13 +12,13 @@ if (file_exists(__DIR__.'/vendor/autoload.php')) {
 
 $app = new Symfony\Component\Console\Application('Hosts Manager', '0.1');
 
-$app->add(new HostsManager\AddCommand);
-$app->add(new HostsManager\RemoveCommand);
-$app->add(new HostsManager\UpdateCommand);
-$app->add(new HostsManager\CheckCommand);
-$app->add(new HostsManager\RollbackCommand);
-$app->add(new HostsManager\AddCommand);
+$app->add(new HostsManager\Console\AddCommand);
+$app->add(new HostsManager\Console\RemoveCommand);
+$app->add(new HostsManager\Console\UpdateCommand);
+$app->add(new HostsManager\Console\CheckCommand);
+$app->add(new HostsManager\Console\RollbackCommand);
+$app->add(new HostsManager\Console\AddCommand);
 
-$app->add(new HostsManager\TestCommand);
+$app->add(new HostsManager\Console\TestCommand);
 
 $app->run();
