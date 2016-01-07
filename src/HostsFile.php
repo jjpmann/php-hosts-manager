@@ -152,16 +152,13 @@ class HostsFile
     }
 
     /**
-     * update host in hosts file.
-     *
-     * @param string The $host to be added to the hosts file
-     * @param string The $ip   to be added along with host to hosts file
+     * save a backup of current hosts file.
      *
      * @throws RuntimeException if already exists or cant write to file
      *
      * @return bool
      **/
-    protected function backup()
+    public function backup()
     {
         $count = $this->backups - 1;
         for ($i = $count; $i > 0; --$i) {
@@ -198,7 +195,7 @@ class HostsFile
      *
      * @param string The $host to be removed to the hosts file
      *
-     * @throws RuntimeException if host does no exists or cant write to file
+     * @throws RuntimeException if host does not exists or cant write to file
      *
      * @return bool
      **/

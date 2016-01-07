@@ -94,9 +94,25 @@ class HostsFileTest extends \PHPUnit_Framework_TestCase
         $hp->remove('not.here.app');
     }
 
+    public function testBackup()
+    {
+        $hp = new HostsFile(__DIR__.'/file.txt');
+        $hp->backup();
+        $this->assertTrue(file_exists(__DIR__.'/file.txt.bkup.1'));
+    }
+
     public function testRollback()
     {
-        //$hp = new HostsFile(__DIR__.'/file.txt');
-        //$this->assertTrue($hp->remove('test.app'));
+        $hp = new HostsFile(__DIR__.'/file.txt');
+        $file1 = file_get_contents(__DIR__.'/file.txt');
+
+        $hp->add('google.com', '127.0.0.2');
+        $file2 = file_get_contents(__DIR__.'/file.txt');
+        $this->assertNotEquals($file1, $file2);
+    
+        $hp->rollback();
+        $file3 = file_get_contents(__DIR__.'/file.txt');
+        $this->assertEquals($file1, $file3);
+
     }
 }
