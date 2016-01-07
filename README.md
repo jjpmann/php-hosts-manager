@@ -21,7 +21,7 @@ __or global__
 
 ## quick intro
 
-    Hosts Manager version 0.4
+    Hosts Manager version 0.5
 
     Usage:
       command [options] [arguments]
