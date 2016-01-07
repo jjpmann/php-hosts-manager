@@ -2,9 +2,9 @@
 
 namespace HostsManager\Console;
 
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class TestCommand extends BaseCommand
 {
@@ -42,7 +42,7 @@ class TestCommand extends BaseCommand
         try {
             $fs->touch($hostsfile);
         } catch (RuntimeException $e) {
-            //echo "<pre>"; var_dump( $e ); exit;  
+            //echo "<pre>"; var_dump( $e ); exit;
         }
 
         echo "<info>Done</info>\n";
