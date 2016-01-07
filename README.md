@@ -46,7 +46,7 @@ __or global__
 
 ## ToDo
 
-0. ~~Stop 'Add' when host exists ~~
+0. ~~Stop "Add" when host exists~~
 0. ~~Add Tests~~
 0. Add some features
 
