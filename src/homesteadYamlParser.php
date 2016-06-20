@@ -4,9 +4,8 @@ namespace HostsManager;
 
 use Symfony\Component\Yaml\Yaml;
 
-class homesteadYamlParser 
+class homesteadYamlParser
 {
-
     protected $pattern = '/(## ------------------- ##)(.*?)(## ------------------- ##)/s';
 
     protected $folders = [];
@@ -19,10 +18,10 @@ class homesteadYamlParser
 
     // $hosts = getHosts($boxes);
 
-    public function __construct($folders = array())
+    public function __construct($folders = [])
     {
         if (!is_array($folders)) {
-            $folders = array($folders);
+            $folders = [$folders];
         }
         $this->folders = $folders;
 
@@ -34,13 +33,14 @@ class homesteadYamlParser
         return $this->pattern;
     }
 
-    protected function parseYaml($folder) 
+    protected function parseYaml($folder)
     {
         $file = "{$folder}/Homestead.yaml";
+
         return Yaml::parse(file_get_contents($file));
     }
 
-    protected function getBoxes() 
+    protected function getBoxes()
     {
         foreach ($this->folders as $key => $folder) {
             $data = $this->parseYaml($folder);
@@ -52,7 +52,8 @@ class homesteadYamlParser
         return $this;
     }
 
-    public function getSites() {
+    public function getSites()
+    {
         $boxes = $this->boxes;
         $sites = [];
         foreach ($boxes as $key => $box) {
@@ -71,31 +72,28 @@ class homesteadYamlParser
             // add phpmyadmin
             $sites[$key]['phpmyadmin']['base'] = "http://{$box['domain']}/phpmyadmin/";
             $sites[$key]['phpmyadmin']['xip.io'] = "http://{$box['domain']}/phpmyadmin/";
-            
         }
+
         return $sites;
     }
 
-    public function getHosts() 
+    public function getHosts()
     {
         $now = date('Y.m.d h:i:s');
         $boxes = $this->boxes;
         $hosts = [];
-        $hosts[] = "## ------------------- ##";
-        $hosts[] = "## LMO HOMESTEAD BOXES ##";
+        $hosts[] = '## ------------------- ##';
+        $hosts[] = '## LMO HOMESTEAD BOXES ##';
         $hosts[] = "##\n## {$now} ##\n##";
         foreach ($boxes as $key => $box) {
             $sites = [];
             foreach ($box['sites'] as $site) {
                 $sites[] = $site['map'];
             }
-            $hosts[] = $box['ip'] . ' ' . implode(' ', $sites);
+            $hosts[] = $box['ip'].' '.implode(' ', $sites);
         }
         $hosts[] = "##\n## ------------------- ##";
+
         return implode("\n", $hosts);
     }
-
-
-
-
 }

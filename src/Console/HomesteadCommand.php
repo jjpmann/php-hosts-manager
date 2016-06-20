@@ -2,10 +2,10 @@
 
 namespace HostsManager\Console;
 
+use HostsManager\homesteadYamlParser;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use HostsManager\homesteadYamlParser;
 
 class HomesteadCommand extends BaseCommand
 {
@@ -36,13 +36,13 @@ class HomesteadCommand extends BaseCommand
     {
         $folders = $input->getArgument('folders');
         if (count($folders) === 0) {
-            $folders = array('.');
+            $folders = ['.'];
         }
 
         $h = new homesteadYamlParser($folders);
 
         $this->hostFile->replace($h->pattern(), $h->getHosts());
 
-        $output->writeLn("Updated.\n\n" . $h->getHosts(). "\n\n");
+        $output->writeLn("Updated.\n\n".$h->getHosts()."\n\n");
     }
 }
