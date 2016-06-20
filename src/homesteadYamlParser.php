@@ -52,8 +52,8 @@ class homesteadYamlParser
         return $this;
     }
 
-    public function getSites($boxes) {
-
+    public function getSites() {
+        $boxes = $this->boxes;
         $sites = [];
         foreach ($boxes as $key => $box) {
             foreach ($box['sites'] as $site) {
@@ -73,8 +73,7 @@ class homesteadYamlParser
             $sites[$key]['phpmyadmin']['xip.io'] = "http://{$box['domain']}/phpmyadmin/";
             
         }
-        $this->sites = $sites;
-        return $this;
+        return $sites;
     }
 
     public function getHosts() 
