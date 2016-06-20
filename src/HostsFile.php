@@ -135,6 +135,39 @@ class HostsFile
     }
 
     /**
+     * replaces matched $pattern of hosts file with new $content 
+     *
+     * @param string The $pattern that will be replaced
+     * @param string The $content new content to be added
+     *
+     * @throws RuntimeException contents not found cant write to file
+     *
+     * @return bool
+     **/
+    public function replace($pattern, $content)
+    {
+
+        $current = $this->file->fread($this->file->getSize());
+
+        if (!preg_match($pattern,  $current, $matches)) {
+            throw new \RuntimeException('No match found.');
+        }
+        
+        $this->backup();
+
+        $replace = str_replace($matches[0], $content, $current);
+
+        $file = new \SplFileObject($this->filepath, 'w');
+        $ok = $file->fwrite($replace);
+
+        if (!$ok) {
+            throw new \RuntimeException('Could not write to file');
+        }
+
+        return true;
+    }
+
+    /**
      * roll back to latest backup.
      *
      * @throws RuntimeException if no backups are found

@@ -1,0 +1,46 @@
+---
+####   PHP 7 BOX
+ip: "192.168.10.10"
+domain: homestead7.app
+memory: 2048
+cpus: 1
+hostname: php7
+name: homestead-php7
+provider: virtualbox
+version: ">= 0.4.2"
+
+authorize: ~/.ssh/id_rsa.pub
+
+keys:
+    - ~/.ssh/id_rsa
+
+folders:
+      # Default
+    - map: "~/homestead"
+      to: "/home/vagrant/homestead"
+
+sites:
+      # Default
+    - map: homestead7.app
+      to: "/home/vagrant/homestead"
+
+databases:
+    - homestead
+
+
+networks:
+    - type: public_network
+      bridge: "en0: Wi-Fi (AirPort)"
+
+# blackfire:
+#     - id: foo
+#       token: bar
+#       client-id: foo
+#       client-token: bar
+
+# ports:
+#     - send: 50000
+#       to: 5000
+#     - send: 7777
+#       to: 777
+#       protocol: udp
