@@ -135,7 +135,7 @@ class HostsFile
     }
 
     /**
-     * replaces matched $pattern of hosts file with new $content 
+     * replaces matched $pattern of hosts file with new $content.
      *
      * @param string The $pattern that will be replaced
      * @param string The $content new content to be added
@@ -146,13 +146,12 @@ class HostsFile
      **/
     public function replace($pattern, $content)
     {
-
         $current = $this->file->fread($this->file->getSize());
 
-        if (!preg_match($pattern,  $current, $matches)) {
+        if (!preg_match($pattern, $current, $matches)) {
             throw new \RuntimeException('No match found.');
         }
-        
+
         $this->backup();
 
         $replace = str_replace($matches[0], $content, $current);
