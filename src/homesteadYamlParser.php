@@ -77,13 +77,13 @@ class homesteadYamlParser
         return $sites;
     }
 
-    public function getHosts()
+    public function getHosts($name = 'HOMESTEAD BOXES') 
     {
         $now = date('Y.m.d h:i:s');
         $boxes = $this->boxes;
         $hosts = [];
-        $hosts[] = '## ------------------- ##';
-        $hosts[] = '## LMO HOMESTEAD BOXES ##';
+        $hosts[] = "## ------------------- ##";
+        $hosts[] = "## $name ##";
         $hosts[] = "##\n## {$now} ##\n##";
         foreach ($boxes as $key => $box) {
             $sites = [];
