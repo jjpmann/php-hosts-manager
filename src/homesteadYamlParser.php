@@ -86,11 +86,14 @@ class homesteadYamlParser
         $hosts[] = "## $name ##";
         $hosts[] = "##\n## {$now} ##\n##";
         foreach ($boxes as $key => $box) {
-            $sites = [];
-            foreach ($box['sites'] as $site) {
-                $sites[] = $site['map'];
+            $groups = array_chunk($box['sites'], 5);
+            foreach ($groups as $sites) {
+                $s = [];
+                foreach ($sites as $site) {
+                    $s[] = $site['map'];
+                }
+                $hosts[] = $box['ip'].' '.implode(' ', $s);
             }
-            $hosts[] = $box['ip'].' '.implode(' ', $sites);
         }
         $hosts[] = "##\n## ------------------- ##";
 

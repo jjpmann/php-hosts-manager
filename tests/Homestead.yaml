@@ -24,6 +24,39 @@ sites:
     - map: homestead7.app
       to: "/home/vagrant/homestead"
 
+      # Default
+    - map: site1.app
+      to: "/home/vagrant/site1"
+
+      # Default
+    - map: site2.app
+      to: "/home/vagrant/site2"
+
+      # Default
+    - map: site3.app
+      to: "/home/vagrant/site3"
+
+      # Default
+    - map: site4.app
+      to: "/home/vagrant/site4"
+
+      # Default
+    - map: site1.app
+      to: "/home/vagrant/site1"
+
+      # Default
+    - map: site5.app
+      to: "/home/vagrant/site5"
+      
+      # Default
+    - map: site6.app
+      to: "/home/vagrant/site6"
+
+      # Default
+    - map: site7.app
+      to: "/home/vagrant/site7"
+
+
 databases:
     - homestead
 
