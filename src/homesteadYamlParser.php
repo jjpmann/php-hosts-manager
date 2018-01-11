@@ -36,7 +36,9 @@ class homesteadYamlParser
     protected function parseYaml($folder)
     {
         $file = "{$folder}/Homestead.yaml";
-
+        if (!file_exists($file)) {
+            return false;
+        }
         return Yaml::parse(file_get_contents($file));
     }
 
@@ -44,6 +46,9 @@ class homesteadYamlParser
     {
         foreach ($this->folders as $key => $folder) {
             $data = $this->parseYaml($folder);
+            if (!$data) {
+                continue;
+            }
             $data['folder'] = $folder;
             $boxes[$key] = $data;
         }
